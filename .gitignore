@@ -1,0 +1,12 @@
+# General
+node_modules/
+.DS_Store
+dist/
+dist-ssr/
+*.local
+
+# Docker
+.dockerprod
+
+# VS Code
+.vscode/

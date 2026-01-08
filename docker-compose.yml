@@ -1,0 +1,9 @@
+services:
+  smartcity-frontend:
+    build: 
+      context: ./frontend/smartcity-dashboard  # Path updated
+    ports:
+      - "5174:5173"
+    volumes:
+      - ./frontend/smartcity-dashboard:/app   # Path updated
+      - /app/node_modules
