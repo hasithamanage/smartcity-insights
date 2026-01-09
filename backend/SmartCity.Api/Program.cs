@@ -23,6 +23,18 @@ builder.Services.AddScoped<ICityMetricRepository, CityMetricRepository>();
 
 builder.Services.AddScoped<ICityMetricService, CityMetricService>();
 
+// 1. Configure Backend CORS by add the policy
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5174") // React Port
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +45,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// 2. Apply the policy
+
+app.UseCors();
 
 app.UseAuthorization();
 
