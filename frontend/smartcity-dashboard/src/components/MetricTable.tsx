@@ -1,5 +1,6 @@
 import type { CityMetric } from '../types/CityMetric';
 import { metricTypeLabel } from '../utils/metricTypeLabel';
+import { StatusBadge } from './StatusBadge'; 
 
 interface Props {
   metrics: CityMetric[];
@@ -19,7 +20,9 @@ export function MetricTable({ metrics }: Props) {
       <tbody>
         {metrics.map((m) => (
           <tr key={m.id} style={{ borderBottom: '1px solid #eee' }}>
-            <td>{metricTypeLabel(m.type)}</td>
+            <td>
+              <StatusBadge type={m.type} />
+            </td>
             <td>{m.value}</td>
             <td>{m.location}</td>
             <td>{new Date(m.timestamp).toLocaleString()}</td>
