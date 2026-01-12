@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from './api/apiClient';
 import type { CityMetric } from './types/CityMetric';
 import { Dashboard } from './pages/Dashboard';
-import { CreateMetricForm } from './components/CreateMetricForm';
+import { CreateMetricForm } from './components/forms/CreateMetricForm'; 
 
 function App() {
   const [metrics, setMetrics] = useState<CityMetric[]>([]);

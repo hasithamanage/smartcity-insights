@@ -1,10 +1,10 @@
-import { metricTypeLabel } from '../utils/metricTypeLabel';
+import { metricTypeLabel } from '../../utils/metricTypeLabel';
 
 interface Props {
   type: number;
 }
 
-export function StatusBadge({ type }: Props) {
+export function MetricTypeBadge({ type }: Props) {
   // Define colors based on the Backend Enum
   const getBadgeStyle = (type: number) => {
     const baseStyle: React.CSSProperties = {

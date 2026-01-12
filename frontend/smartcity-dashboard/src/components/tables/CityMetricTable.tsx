@@ -1,12 +1,11 @@
 import type { CityMetric } from '../types/CityMetric';
-import { metricTypeLabel } from '../utils/metricTypeLabel';
-import { StatusBadge } from './StatusBadge'; 
+import { MetricTypeBadge } from '../ui/MetricTypeBadge'; 
 
 interface Props {
   metrics: CityMetric[];
 }
 
-export function MetricTable({ metrics }: Props) {
+export function CityMetricTable({ metrics }: Props) {
   return (
     <table width="100%" cellPadding={10} style={{ borderCollapse: 'collapse', marginTop: '1rem' }}>
       <thead>
@@ -21,7 +20,7 @@ export function MetricTable({ metrics }: Props) {
         {metrics.map((m) => (
           <tr key={m.id} style={{ borderBottom: '1px solid #eee' }}>
             <td>
-              <StatusBadge type={m.type} />
+              <MetricTypeBadge type={m.type} />
             </td>
             <td>{m.value}</td>
             <td>{m.location}</td>

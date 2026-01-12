@@ -1,5 +1,5 @@
 import type { CityMetric } from '../types/CityMetric';
-import { MetricTable } from '../components/MetricTable';
+import { CityMetricTable } from '../components/tables/CityMetricTable'; 
 
 interface Props {
   metrics: CityMetric[];
@@ -13,7 +13,7 @@ export function Dashboard({ metrics }: Props) {
         <span style={{ color: '#666' }}>Total Records: {metrics.length}</span>
       </header>
 
-      <MetricTable metrics={metrics} />
+      <CityMetricTable metrics={metrics} />
     </div>
   );
 }
