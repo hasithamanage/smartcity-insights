@@ -20,6 +20,12 @@ namespace SmartCity.Application.Services
 
         public async Task AddAsync(CityMetricDto dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.Location) || dto.Location.Length < 3)
+                throw new ArgumentException("Location must be at least 3 characters long.");
+
+            if (dto.Value < 0 || dto.Value > 1000)
+                throw new ArgumentException("Metric value must be between 0 and 1000.");
+
             var metric = new CityMetric
             {
                 Id = Guid.NewGuid(),
@@ -31,5 +37,6 @@ namespace SmartCity.Application.Services
 
             await _repository.AddAsync(metric);
         }
+
     }
 }

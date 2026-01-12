@@ -25,8 +25,16 @@ namespace SmartCity.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CityMetricDto dto)
         {
-            await _service.AddAsync(dto);
-            return Ok();
+            try
+            {
+                await _service.AddAsync(dto);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
+
     }
 }
