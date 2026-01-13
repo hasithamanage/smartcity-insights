@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { cityMetricsService } from '../../api/cityMetrics.service';
+import { MetricType } from '../../domain/MetricType';
 
 interface Props {
   onSuccess: () => void;
 }
 
 export function CreateMetricForm({ onSuccess }: Props) {
-  const [formData, setFormData] = useState({ type: 1, value: 0, location: '' });
-   // 1. Add: State for error messages
+  const [formData, setFormData] = useState({ type: MetricType.Traffic, value: 0, location: '' });
+  // 1. Add: State for error messages
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +27,7 @@ export function CreateMetricForm({ onSuccess }: Props) {
     }
 
     try {
-     await cityMetricsService.create(formData);
+      await cityMetricsService.create(formData);
       setFormData({ type: 1, value: 0, location: '' });
       onSuccess();
     } catch (err) {
@@ -37,7 +38,7 @@ export function CreateMetricForm({ onSuccess }: Props) {
 
         setError(message);
       }
-    } 
+    }
   };
 
   return (
@@ -54,10 +55,13 @@ export function CreateMetricForm({ onSuccess }: Props) {
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
         <label>
           Type:
-          <select value={formData.type} onChange={e => setFormData({ ...formData, type: Number(e.target.value) })}>
-            <option value={1}>Traffic</option>
-            <option value={2}>Air Quality</option>
-            <option value={3}>Energy</option>
+          <select
+            value={formData.type}
+            onChange={e => setFormData({ ...formData, type: Number(e.target.value) as MetricType })}
+          >
+            <option value={MetricType.Traffic}>Traffic</option>
+            <option value={MetricType.AirQuality}>Air Quality</option>
+            <option value={MetricType.Energy}>Energy</option>
           </select>
         </label>
         <label>

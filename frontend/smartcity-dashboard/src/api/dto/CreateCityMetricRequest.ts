@@ -1,5 +1,7 @@
+import { MetricType } from '../../domain/MetricType';
+
 export interface CreateCityMetricRequest {
-  type: number;
+  type: MetricType; // Changed from number
   value: number;
   location: string;
 }
