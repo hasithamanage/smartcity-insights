@@ -1,8 +1,8 @@
-import type { CityMetric } from '../types/CityMetric';
+import type { CityMetricResponse } from '../../api/dto/CityMetricResponse';
 import { MetricTypeBadge } from '../ui/MetricTypeBadge'; 
 
 interface Props {
-  metrics: CityMetric[];
+  metrics: CityMetricResponse[];
 }
 
 export function CityMetricTable({ metrics }: Props) {
@@ -19,12 +19,10 @@ export function CityMetricTable({ metrics }: Props) {
       <tbody>
         {metrics.map((m) => (
           <tr key={m.id} style={{ borderBottom: '1px solid #eee' }}>
-            <td>
-              <MetricTypeBadge type={m.type} />
-            </td>
+            <td><MetricTypeBadge type={m.type} /></td>
             <td>{m.value}</td>
             <td>{m.location}</td>
-            <td>{new Date(m.timestamp).toLocaleString()}</td>
+            <td>{new Date(m.timestamp + (m.timestamp.endsWith('Z') ? '' : 'Z')).toLocaleString('fi-FI')}</td>
           </tr>
         ))}
       </tbody>

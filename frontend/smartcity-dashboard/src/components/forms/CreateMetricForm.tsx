@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { apiClient } from '../../api/apiClient';
+import { cityMetricsService } from '../../api/cityMetrics.service';
 
 interface Props {
   onSuccess: () => void;
@@ -26,7 +26,7 @@ export function CreateMetricForm({ onSuccess }: Props) {
     }
 
     try {
-      await apiClient.post('/api/CityMetrics', formData);
+     await cityMetricsService.create(formData);
       setFormData({ type: 1, value: 0, location: '' });
       onSuccess();
     } catch (err) {
