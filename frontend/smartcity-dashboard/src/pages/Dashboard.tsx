@@ -1,47 +1,24 @@
-import { useEffect, useState } from 'react';
-import { cityMetricsService } from '../api/cityMetrics.service';
-import type { CityMetricResponse } from '../api/dto/CityMetricResponse';
+import { useCityMetrics } from '../hooks/useCityMetrics';
 import { CityMetricTable } from '../components/tables/CityMetricTable'; 
 import { CreateMetricForm } from '../components/forms/CreateMetricForm';
+import { LoadingScreen } from '../components/ui/LoadingScreen';
+import { ErrorPanel } from '../components/ui/ErrorPanel';
+import { AppLayout } from '../components/layout/AppLayout';
+import { DashboardStyles as S } from './Dashboard.styles';
 
 export function Dashboard() {
-  const [metrics, setMetrics] = useState<CityMetricResponse[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { metrics, loading, error, reload } = useCityMetrics();
 
-  const loadData = async () => {
-    try {
-      if (metrics.length === 0) setLoading(true);
-      
-      const data = await cityMetricsService.getAll();
-      setMetrics(data);
-    } catch (error) {
-      console.error("Failed to load metrics:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  if (loading) return <div>Loading city data...</div>;
+  if (error) return <ErrorPanel message={error} onRetry={reload} />;
+  if (loading) return <LoadingScreen />;
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-      <header style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '1rem'
-      }}>
-        <h2>City Metrics Overview</h2>
-        <span>Total Records: {metrics.length}</span>
-      </header>
-
-      {/* Create Metric Form nested inside the Dashboard */}
-      <CreateMetricForm onSuccess={loadData} />
+    <AppLayout 
+      title="City Metrics Overview" 
+      extraHeader={<span style={S.recordCount}>Total: {metrics.length}</span>}
+    >
+      <CreateMetricForm onSuccess={reload} />
       <CityMetricTable metrics={metrics} />
-    </div>
+    </AppLayout>
   );
 }
