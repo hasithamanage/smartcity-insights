@@ -50,6 +50,10 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+// Use custom error handler
+
+app.UseMiddleware<SmartCity.Api.Middleware.ExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
