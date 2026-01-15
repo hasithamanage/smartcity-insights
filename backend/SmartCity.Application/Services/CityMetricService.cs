@@ -13,18 +13,27 @@ namespace SmartCity.Application.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<CityMetric>> GetAllAsync()
+        public async Task<IEnumerable<CityMetricResponse>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var entities = await _repository.GetAllAsync();
+
+            // Map Entity -> Response DTO
+            return entities.Select(m => new CityMetricResponse
+            {
+                Id = m.Id,
+                Type = m.Type,
+                Value = m.Value,
+                Location = m.Location,
+                Timestamp = m.Timestamp
+            });
         }
 
-        public async Task AddAsync(CityMetricDto dto)
+        public async Task<CityMetricResponse> AddAsync(CreateCityMetricRequest dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Location) || dto.Location.Length < 3)
-                throw new ArgumentException("Location must be at least 3 characters long.");
 
-            if (dto.Value < 0 || dto.Value > 1000)
-                throw new ArgumentException("Metric value must be between 0 and 1000.");
+            // These are Safety Guards - the API layer should have caught these
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
 
             var metric = new CityMetric
             {
@@ -36,6 +45,16 @@ namespace SmartCity.Application.Services
             };
 
             await _repository.AddAsync(metric);
+
+            // Return the Response DTO
+            return new CityMetricResponse
+            {
+                Id = metric.Id,
+                Type = metric.Type,
+                Value = metric.Value,
+                Location = metric.Location,
+                Timestamp = metric.Timestamp
+            };
         }
 
     }

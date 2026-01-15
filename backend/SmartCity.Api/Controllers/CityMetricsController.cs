@@ -16,24 +16,19 @@ namespace SmartCity.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<CityMetricResponse>>> Get()
         {
             var metrics = await _service.GetAllAsync();
             return Ok(metrics);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CityMetricDto dto)
+        public async Task<ActionResult<CityMetricResponse>> Post([FromBody] CreateCityMetricRequest dto)
         {
-            try
-            {
-                await _service.AddAsync(dto);
-                return Ok();
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            
+            // 400 Bad Request automatically based on DTO attributes
+            var result = await _service.AddAsync(dto);
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
     }
