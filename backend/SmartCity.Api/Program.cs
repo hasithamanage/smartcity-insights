@@ -1,30 +1,25 @@
 using Microsoft.EntityFrameworkCore;
+using SmartCity.Api.Middleware;
 using SmartCity.Application.Interfaces;
 using SmartCity.Application.Services;
 using SmartCity.Infrastructure.Data;
 using SmartCity.Infrastructure.Repositories;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-// Add services to the container.
-
+// --- 1. Services Configuration ---
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SmartCityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Dependency Injection
 builder.Services.AddScoped<ICityMetricRepository, CityMetricRepository>();
-
 builder.Services.AddScoped<ICityMetricService, CityMetricService>();
 
-// 1. Configure Backend CORS by add the policy
-
+// CORS Policy Configuration
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -37,7 +32,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- 2. Request Pipeline (Middleware) ---
+
+// Always first: Catch errors from every middleware below it
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -46,13 +45,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// 2. Apply the policy
-
+// Early CORS handling
 app.UseCors();
-
-// Use custom error handler
-
-app.UseMiddleware<SmartCity.Api.Middleware.ExceptionMiddleware>();
 
 app.UseAuthorization();
 
