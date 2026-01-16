@@ -19,13 +19,15 @@ SmartCity Insights is a modern, scalable solution designed to help city administ
 
 The project is built with a modern fullstack architecture:  
 
-- **Backend**: C# (45%) - ASP.NET Core for robust server-side logic
-- **Frontend**: TypeScript (45.2%) - React/Vite for dynamic UI components
-- **Styling**: CSS (6%) + HTML (1.2%) - Responsive design
-- **Scripting**: JavaScript (2.1%)
-- **Containerization**: Docker (0.5%) - For cloud deployment
+| Category | Technologies | Focus |
+|:---|:---|:---|
+| **Frontend** | `Vite`, `React 18`, `TypeScript` | **Modular Component Architecture**, Custom Hooks, State Management |
+| **Backend** | `.NET 8`, `ASP.NET Core Web API` | **Clean Architecture**, Global Middleware, DTO-driven Contracts |
+| **Data & Persistence** | `SQL Server`, `EF Core` | Repository Pattern, Code-First Migrations, Database Seeding |
+| **Security & Quality** | `Data Annotations`, `Middleware` | Request Validation, Error Handling, Secure API Surface |
+| **Environment** | `Docker`, `Azure` | Containerization & Cloud-native development |
 
-## 🚀 Getting Started
+## ▶️ Getting Started
 
 ### Prerequisites
 
@@ -132,7 +134,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 
-## 🗺️ Roadmap
+## ➡️ Roadmap
 
 - [ ] Real-time data streaming integration
 - [ ] Advanced analytics and ML predictions
