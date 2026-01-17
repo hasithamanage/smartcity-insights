@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCity.Application", "Sm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCity.Infrastructure", "SmartCity.Infrastructure\SmartCity.Infrastructure.csproj", "{40635953-2E44-49C2-81F6-FAFF116A8FE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCity.Tests", "SmartCity.Tests\SmartCity.Tests.csproj", "{965B026B-2963-6306-169A-6B06AD1B9BAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{40635953-2E44-49C2-81F6-FAFF116A8FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40635953-2E44-49C2-81F6-FAFF116A8FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40635953-2E44-49C2-81F6-FAFF116A8FE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965B026B-2963-6306-169A-6B06AD1B9BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965B026B-2963-6306-169A-6B06AD1B9BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965B026B-2963-6306-169A-6B06AD1B9BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965B026B-2963-6306-169A-6B06AD1B9BAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
