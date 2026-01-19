@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartCity.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SmartCity.Infrastructure.Data;
 namespace SmartCity.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartCityDbContext))]
-    partial class SmartCityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260118234953_AddUsersTable")]
+    partial class AddUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

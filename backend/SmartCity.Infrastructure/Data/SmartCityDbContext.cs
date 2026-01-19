@@ -10,6 +10,7 @@ namespace SmartCity.Infrastructure.Data
             : base(options) { }
 
         public DbSet<CityMetric> CityMetrics => Set<CityMetric>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

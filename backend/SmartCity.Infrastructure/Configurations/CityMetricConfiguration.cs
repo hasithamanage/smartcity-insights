@@ -13,7 +13,7 @@ namespace SmartCity.Infrastructure.Data.Configurations
             builder.HasData(
                 new CityMetric
                 {
-                    Id = Guid.Parse("0be4b48b-b3bc-4fa8-8799-6dcb935990e5"),
+                    Id = new Guid("0be4b48b-b3bc-4fa8-8799-6dcb935990e5"),
                     Type = MetricType.Traffic,
                     Value = 72,
                     Location = "Jyväskylä Center",
@@ -21,7 +21,7 @@ namespace SmartCity.Infrastructure.Data.Configurations
                 },
                 new CityMetric
                 {
-                    Id = Guid.Parse("9646e955-d25b-4684-bff1-e029e179e03a"),
+                    Id = new Guid("9646e955-d25b-4684-bff1-e029e179e03a"),
                     Type = MetricType.AirQuality,
                     Value = 41,
                     Location = "Lutakko",

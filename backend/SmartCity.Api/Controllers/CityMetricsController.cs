@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartCity.Application.DTOs;
 using SmartCity.Application.Services;
 
@@ -15,13 +16,14 @@ namespace SmartCity.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet] // Public can see the metrics
         public async Task<ActionResult<IEnumerable<CityMetricResponse>>> Get()
         {
             var metrics = await _service.GetAllAsync();
             return Ok(metrics);
         }
 
+        [Authorize] // Only logged-in user can post
         [HttpPost]
         public async Task<ActionResult<CityMetricResponse>> Post([FromBody] CreateCityMetricRequest dto)
         {
