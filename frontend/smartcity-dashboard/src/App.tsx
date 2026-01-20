@@ -1,14 +1,18 @@
-import { Dashboard } from './pages/Dashboard';
+import { AuthProvider } from './context/AuthContext';
+import { AppRouter } from './navigation/AppRouter';
+import { GlobalStyles } from './styles/GlobalStyles';
 
-function App() {
+/**
+ * App Composition Root
+ * Responsible for wiring global infrastructure providers.
+ */
+const App = () => {
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <header style={{ borderBottom: '2px solid #eee', marginBottom: '2rem' }}>
-        <h1>🏙️ SmartCity Insights</h1>
-      </header>
-      <Dashboard />
-    </div>
+    <AuthProvider>
+      <GlobalStyles />
+      <AppRouter />
+    </AuthProvider>
   );
-}
+};
 
 export default App;
