@@ -8,7 +8,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  
+
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,9 +20,11 @@ export function LoginPage() {
       const data = await authService.login(username, password);
       login(data); // Saves the token to context and localStorage
     } catch (err: any) {
-      // Catching the unified error contract { error: "message" }
-      const message = err.response?.data?.error || "Login failed. Please check your credentials.";
-      setError(message);
+      if (!err.response) {
+        setError("Cannot connect to API. Is the backend running?");
+      } else {
+        setError(err.response?.data?.error || "Login failed. Please check your credentials.");
+      }
     } finally {
       setLoading(false);
     }
@@ -32,15 +34,15 @@ export function LoginPage() {
     <div style={S.container}>
       <div style={S.card}>
         <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Admin Login</h2>
-        
+
         {error && <div style={S.error}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div style={S.inputGroup}>
             <label>Username</label>
-            <input 
+            <input
               style={S.input}
-              type="text" 
+              type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -48,16 +50,16 @@ export function LoginPage() {
           </div>
           <div style={S.inputGroup}>
             <label>Password</label>
-            <input 
+            <input
               style={S.input}
-              type="password" 
-              value={password} 
+              type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             style={{ ...S.button, opacity: loading ? 0.7 : 1 }}
           >

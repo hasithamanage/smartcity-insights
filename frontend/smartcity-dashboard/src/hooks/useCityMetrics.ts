@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cityMetricsService } from '../api/cityMetrics.service';
-import type { CityMetricResponse } from '../api/dto/CityMetricResponse';
+import type { CityMetricResponse } from '../api/models/CityMetricResponse';
 
 export function useCityMetrics() {
   const [metrics, setMetrics] = useState<CityMetricResponse[]>([]);

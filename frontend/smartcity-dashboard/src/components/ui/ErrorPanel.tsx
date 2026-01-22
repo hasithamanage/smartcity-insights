@@ -6,7 +6,7 @@ interface Props {
 export function ErrorPanel({ message, onRetry }: Props) {
   return (
     <div style={errorBoxStyle}>
-      <h3 style={{ marginTop: 0 }}>⚠️ Something went wrong</h3>
+      <h3 style={{ marginTop: 0 }}>⚠️ Something went wrong - API Can be Offline</h3>
       <p>{message}</p>
       <button onClick={onRetry} style={buttonStyle}>Try Again</button>
     </div>

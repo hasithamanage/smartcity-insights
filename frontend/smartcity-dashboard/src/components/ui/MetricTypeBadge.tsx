@@ -1,18 +1,38 @@
-import { MetricType } from '../../domain/MetricType';
+import { MetricType, MetricTypeMetadata } from '../../domain/MetricType';
 
 interface Props {
-  type: MetricType; // Strict typing
+  type: MetricType;
 }
 
 export function MetricTypeBadge({ type }: Props) {
-  switch (type) {
-    case MetricType.Traffic:
-      return <span style={{ color: 'blue' }}>🚗 Traffic</span>;
-    case MetricType.AirQuality:
-      return <span style={{ color: 'green' }}>🍃 Air Quality</span>;
-    case MetricType.Energy:
-      return <span style={{ color: 'orange' }}>⚡ Energy</span>;
-    default:
-      return <span>Unknown</span>;
+  // Look up the metadata for this specific enum value
+  const metadata = MetricTypeMetadata[type];
+
+  // Fallback for safety if an unknown type comes from the API
+  if (!metadata) {
+    return <span style={badgeStyle('#666')}>❓ Unknown</span>;
   }
+
+  return (
+    <span style={badgeStyle(metadata.color)}>
+      {metadata.icon} {metadata.label}
+    </span>
+  );
 }
+
+
+// Enterprise Badge Styling
+
+const badgeStyle = (color: string): React.CSSProperties => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '6px',
+  padding: '4px 10px',
+  borderRadius: '6px',
+  fontSize: '0.85rem',
+  fontWeight: 600,
+  backgroundColor: `${color}15`, // Adds 15% transparency to the hex color
+  color: color,
+  border: `1px solid ${color}30`,
+  whiteSpace: 'nowrap'
+});

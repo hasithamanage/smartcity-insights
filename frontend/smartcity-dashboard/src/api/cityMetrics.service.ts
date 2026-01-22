@@ -1,6 +1,6 @@
 import { apiClient } from './apiClient';
-import type { CreateCityMetricRequest } from './dto/CreateCityMetricRequest';
-import type { CityMetricResponse } from './dto/CityMetricResponse';
+import type { CreateCityMetricRequest } from './models/CreateCityMetricRequest';
+import type { CityMetricResponse } from './models/CityMetricResponse';
 
 export const cityMetricsService = {
   async getAll(): Promise<CityMetricResponse[]> {

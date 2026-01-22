@@ -1,17 +1,17 @@
 import { AuthProvider } from './context/AuthContext';
 import { AppRouter } from './navigation/AppRouter';
 import { GlobalStyles } from './styles/GlobalStyles';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
-/**
- * App Composition Root
- * Responsible for wiring global infrastructure providers.
- */
+
 const App = () => {
   return (
-    <AuthProvider>
-      <GlobalStyles />
-      <AppRouter />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <GlobalStyles />
+        <AppRouter />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 

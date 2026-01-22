@@ -2,7 +2,7 @@ export function LoadingScreen() {
   return (
     <div style={containerStyle}>
       <div style={titleStyle}>Loading SmartCity data…</div>
-      <div style={subTextStyle}>Connecting to KiltaSphere API and fetching latest metrics</div>
+      <div style={subTextStyle}>Connecting to API and fetching latest metrics</div>
     </div>
   );
 }

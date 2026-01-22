@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * GlobalStyles
  * Enterprise-grade CSS reset and base typography.

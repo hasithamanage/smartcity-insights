@@ -1,4 +1,4 @@
-import type { CityMetricResponse } from '../../api/dto/CityMetricResponse';
+import type { CityMetricResponse } from '../../api/models/CityMetricResponse';
 import { MetricTypeBadge } from '../ui/MetricTypeBadge'; 
 import { TableStyles as S } from './CityMetricTable.styles';
 import { EmptyTableState } from './EmptyTableState';
