@@ -1,6 +1,6 @@
 ﻿using SmartCity.Application.DTOs;
 
-namespace SmartCity.Application.Services
+namespace SmartCity.Application.Interfaces
 {
     public interface ICityMetricService
     {
