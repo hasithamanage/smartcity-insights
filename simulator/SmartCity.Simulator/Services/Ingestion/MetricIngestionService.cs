@@ -18,13 +18,21 @@ namespace SmartCity.Simulator.Services.Ingestion
 
         public async Task SendMetricAsync(SensorReadingPayload payload, CancellationToken ct)
         {
-            // Step 1: Secure the pipe
+            // 1. Fetch token
             var token = await _authService.GetAccessTokenAsync(ct);
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Step 2: Push the data
-            // Target existing CityMetrics endpoint
-            var response = await _httpClient.PostAsJsonAsync("api/CityMetrics", payload, ct);
+            // 2. Create a request-specific message (Thread-safe)
+            using var request = new HttpRequestMessage(HttpMethod.Post, "api/CityMetrics")
+            {
+                Content = JsonContent.Create(payload),
+                Headers =
+            {
+                Authorization = new AuthenticationHeaderValue("Bearer", token)
+            }
+            };
+
+            // 3. Send via the shared client
+            var response = await _httpClient.SendAsync(request, ct);
 
             if (!response.IsSuccessStatusCode)
             {
