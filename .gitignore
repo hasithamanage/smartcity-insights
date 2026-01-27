@@ -10,3 +10,67 @@ dist-ssr/
 
 # VS Code
 .vscode/
+
+# .NET build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.db
+*.opendb
+
+# Debug / release artifacts
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+
+# ASP.NET temporary files
+*.resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+*.nuspec
+*.psmdcp
+
+# Logs and backups
+*.log
+*.tlog
+*.tmp
+*.bak
+
+# Environment configs (keep connection string safe)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+
+# Rider / VSCode
+.idea/
+.vscode/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+
+# User-specific config
+*.vsconfig
