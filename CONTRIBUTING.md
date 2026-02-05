@@ -1,121 +1,159 @@
-## ▶️ Getting Started
+# Jyväskylä SmartCity Insights - Developer Guide
+
+This document contains **developer-focused documentation** for running, configuring and extending the Jyväskylä SmartCity Insights platform locally.
+
+It complements the main [`README.md`](README.md), which provides a high-level project overview.
+
+---
+
+```mermaid
+graph TD
+    Sim[Simulator: .NET Worker] -->|POST| API[ASP.NET Core Web API]
+    API -->|Read/Write| DB[(SQL Server: Docker)]
+    Dashboard[React Dashboard] -->|REST| API
+    API -.->|SignalR / WebSockets| Dashboard
+```
+---
+
+```mermaid
+graph TD
+    Sim[Simulator] --> API[Web API]
+    API --> DB[(SQL Server)]
+    Dashboard --> API
+
+    style Sim fill:#f9f,stroke:#333,stroke-width:2px
+    style DB fill:#00758f,stroke:#fff,color:#fff
+    style Dashboard fill:#61dafb,stroke:#333
+```
+---
+
+## ▶️ Local Development Setup
 
 ### Prerequisites
 
-- .NET 8.0 SDK (Required for Backend and Simulator)
-- Node.js 20+ (Recommended for React 19/Vite)
-- Docker (optional for containerized deployment)
-- Git
+Ensure the following tools are installed:
 
-### Installation 
+- **.NET 10.0 SDK**
+- **Node.js 20+**
+- **Docker Desktop** (recommended for database)
+- **Git**
 
-1. **Clone the repository**
+---
+
+## Installation
+
+### 1. Clone the Repository
+
    ```bash
    git clone https://github.com/hasithamanage/smartcity-insights.git
    cd smartcity-insights
    ```
 
-2. **Backend Infrastructure:** The backend provides the API and identity management.
+### 2. Backend Setup (ASP.NET Core API)
+
+Navigate to the API folder, apply migrations and run the service:
+
    ```bash
    cd backend/SmartCity.API
-   dotnet restore
+   dotnet ef database update
    dotnet run
-   # API will be available at https://localhost:7018
    ```
+*API will be available at https://localhost:5038/swagger*
 
-3. **Frontend Dashboard:** Built with React and Vite. Ensure you have your `.env` file configured with `VITE_API_BASE_URL=https://localhost:7018`.
+### 3. Frontend Setup (React + Vite)
+
+Ensure you have you have .env file configured in the project root:
+
+```env
+VITE_API_BASE_URL=https://localhost:5038.
+```
+
+Navigate to the frontend project, install dependancies and run the development server:
 
    ```bash
    cd frontend/smartcity-dashboard
    npm install
    npm run dev
-   # App will be available at http://localhost:5174
    ```
+*App will be available at http://localhost:5173*
 
-4. **IoT Simulator (Optional):** To generate live city metrics, run the background worker.
+
+### 4. Simulator Setup (IoT Data Source)
+
+In a new terminal, start the simulation engine to generate live data:
 
    ```bash
-   cd backend/SmartCity.Simulator
+   cd simulator/SmartCity.Simulator
    dotnet run
-   ```
+  ```
 
-## 📦 Project Structure
+*Once running, it will continuously push simulated data to the backend API.*
 
-```
-smartcity-insights/
-├── backend/                   # .NET 8 Clean Architecture Solution
-│   ├── SmartCity.API/         # Controllers & Middleware
-│   ├── SmartCity.Application/ # Service Interfaces & Business Logic
-│   ├── SmartCity.Domain/      # Shared Entities & MetricType Enums
-│   └── SmartCity.Infrastructure/ # Data Persistence (EF Core)
-├── frontend/                  # React (Vite) + TypeScript
-│   ├── src/api/               # Axios clients & Ingestion Services
-│   ├── src/context/           # Auth & State Management
-│   └── src/navigation/        # AppRouter & Auth Gates
-├── simulator/                 # .NET 9 Worker Service (IoT Stimulator)
-│   ├── Modules/               # Sensor logic (Traffic, Air, Energy)
-│   └── Services/              # Resilience-hardened Ingestion
-├── docker/                    # Multi-container orchestration
-└── README.md     
+---
+
+### Database Configuration
+
+The project uses **Azure SQL Edge** via **Docker** to ensure cross-platform compatibility between macOS, Windows and Linux.
+
+### 1. Update the Backend Connection String
+
+In `backend/SmartCity.Api/appsettings.Development.json` (or `appsettings.json`), update the connection string configure for **Docker**:
+
+```JSON
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=SmartCityDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;"
+}
 ```
 
-## 🔧 Configuration
+### 2. Start the database 
 
-Update the configuration files as needed for your environment:
-
-- Backend:  `appsettings.json`
-- Frontend: `.env` file
-
-## ☁️ Deployment
-
-### Docker Deployment
-
-Currently, the frontend dashboard is containerized. The backend and simulator are run locally for development.
+Inside the root folder, run:
 
 ```bash
-docker build -t smartcity-frontend .  
+docker compose up -d smartcity-db  
 ```
+*Wait about 20 seconds for the database to finish "waking up" inside the container.*
 
-### Cloud Deployment
+---
 
-The **smartcity-insights** ecosystem is architected for a "Cloud Native" approach, utilizing containerization for environment parity.
+### Note:
 
-**Current Readiness:**
-- **Dockerized:** Multi-stage Dockerfiles for both Frontend and Backend.
-- **Stateless:** The API and Simulator utilize external configuration (Environment Variables), making them compatible with orchestrators.
+1. **For Docker Users (Mac/Windows/Linux):** This string works as-is once the container is running.
 
-**Deployment Targets:**
-- **Azure:** Optimized for Web App for Containers & Azure SQL.
-- **AWS:** Compatible with ECS/Fargate for serverless container execution.
-- **On-Prem/Hybrid:** Kubernetes-ready using Helm charts (Future).
+2. **For Windows (Local SQL Server):** You may optionally use a local SQL Server installation instead of Docker: change the server to `(localdb)\\mssqllocaldb` or `.` and use `Trusted_Connection=True`.
 
-## 📊 Data Sources
+3. Unlike local Windows SQL Server, the Docker version requires an explicit `User ID` (sa) and `Password`.
 
-The application monitors:  
-- **Traffic Data**: Vehicle counts, average speeds, congestion indices
-- **Energy Metrics**: Power consumption, grid status, renewable energy sources
-- **Environmental Data**: Air quality index (AQI), temperature, humidity, noise levels
 
-## 🔒 Security
-
-- Input validation on all endpoints
-- Secure API authentication (to be configured)
-- HTTPS enforcement in production
-- Data encryption at rest and in transit
-
-## 📝 API Documentation
+## API Documentation
 
 The **smartcity-insights** backend exposes a fully interactive OpenAPI/Swagger UI. This allows you to test the `CityMetrics` and `Auth` endpoints directly from the browser.
 
 ```
-http://localhost:7018/swagger
+http://localhost:5038/swagger
 ```
 
-## ⚠️ Known Issues
+## Known Issues
 
 This project is currently under active development. Please refer to the [Issues](https://github.com/hasithamanage/smartcity-insights/issues) section for known bugs and planned features.
 
-## </> Contributing
+
+### Permission Errors (UnauthorizedAccessException)
+
+If you see "Access to path is denied" regarding the `.aspnet/DataProtection-Keys` folder in your logs:
+
+1. Ensure your account has ownership of the .aspnet folder.
+
+2. If using Antivirus (Avast/Norton), temporarily disable it or add an exception for the .NET runtime.
+
+3. The project is configured to use an Ephemeral Data Provider if disk access is blocked.
+
+### JWT Key Requirements
+
+For local development, ensure your `appsettings.Development.json` has a `Jwt:Key` that is at least 32 characters long to satisfy the HS256 algorithm requirements.
+
+
+## Contributing
 
 Welcome contributions!  Please follow these steps:
 
@@ -136,21 +174,3 @@ Before starting any work, please ensure there is an open **Issue** describing th
 - Reference the issue number in the description (e.g: `Fixes #12`).
 - Ensure all TypeScript and .NET projects build without errors.
 - Follow the established project structure (Logic in Hooks/Services, UI in Components).
-
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 
-
-
-## ➡️ Roadmap
-
-- [ ] Real-time data streaming integration
-- [ ] Advanced analytics and ML predictions
-- [ ] Mobile application
-- [ ] Multi-language support
-- [ ] Enhanced visualization dashboards
-
----
-
-**Last Updated**: February 2026

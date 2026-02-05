@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using SmartCity.Domain.Entities;
 using SmartCity.Infrastructure.Data.Configurations; 
 
@@ -11,6 +12,12 @@ namespace SmartCity.Infrastructure.Data
 
         public DbSet<CityMetric> CityMetrics => Set<CityMetric>();
         public DbSet<User> Users => Set<User>();
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // This suppresses the "Pending Model Changes" warning caused by EF 10's strictness
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

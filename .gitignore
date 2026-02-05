@@ -4,6 +4,9 @@ node_modules/
 dist/
 dist-ssr/
 *.local
+temp-keys/
+temp-keys
+.aspnet/
 
 # Docker
 .dockerprod
@@ -74,3 +77,19 @@ desktop.ini
 
 # User-specific config
 *.vsconfig
+
+#Azure sql password
+.env
+
+# Local security keys
+keys/
+temp-keys/
+.aspnet/
+
+# Environment files
+.env
+appsettings.Local.json
+
+# User-specific files
+.DS_Store
+*.user

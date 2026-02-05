@@ -1,9 +1,15 @@
 services:
-  smartcity-frontend:
-    build: 
-      context: ./frontend/smartcity-dashboard  # Path updated
+  smartcity-db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: smartcity-db
+    restart: always
+    environment:
+      - ACCEPT_EULA=1
+      - MSSQL_SA_PASSWORD=${SQL_PASSWORD} # Docker pulls this from .env
     ports:
-      - "5174:5173"
+      - "1433:1433"
     volumes:
-      - ./frontend/smartcity-dashboard:/app   # Path updated
-      - /app/node_modules
+      - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:
