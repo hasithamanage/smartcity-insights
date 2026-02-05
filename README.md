@@ -1,6 +1,6 @@
 # Jyväskylä SmartCity Insights
 
-A cloud-ready fullstack application for monitoring and analyzing city data including **traffic, energy consumption and environmental metrics**. Designed using **Clean Architecture, Domain-Driven Design and Cloud-native principles**. 
+A cloud-ready fullstack application for monitoring and analyzing city data including **traffic, energy consumption and environmental metrics**. Designed using **clean architecture, domain-driven design and cloud-native principles**. 
 
 ## 📋 The State of the City at a Glance
 
@@ -26,7 +26,6 @@ Jyväskylä SmartCity Insights displays the current state of the city and its mo
 | **Security & Quality** | `Data Annotations`, `Middleware` | Request Validation, Error Handling, Secure API Surface |
 | **Environment** | `Docker`, `Azure-ready` | Containerization & Cloud-native development |
 
----
 
 ## 💻 Visual Preview
 
@@ -46,7 +45,7 @@ Jyväskylä SmartCity Insights displays the current state of the city and its mo
 
 ---
 
-## 🏗️ System Architecture (High Level)
+## 📐 System Architecture
 
 The system is designed as a decoupled micro-ecosystem where data flows from the physical (simulated) world to the end-user dashboard.
 
@@ -57,6 +56,15 @@ graph TD
     Dashboard[React Dashboard] -->|GET /api/metrics| API
     API -.->|Real-time| Dashboard
 ```
+
+
+## 🔄 Data Flow Summary
+
+1. Simulator generates metric data
+2. Data is sent to the API via REST endpoints
+3. API validates and persists metrics
+4. Frontend fetches aggregated data for visualization
+
 
 
 ## 📦 Project Structure
@@ -79,18 +87,8 @@ smartcity-insights/
 └── README.md     
 ```
 
----
 
-## 🔄 Data Flow Summary
-
-1. Simulator generates metric data
-2. Data is sent to the API via REST endpoints
-3. API validates and persists metrics
-4. Frontend fetches aggregated data for visualization
-
----
-
-## 🚧 Roadmap
+## 📄 Roadmap
 
 - [ ] Real-time data streaming integration (SignalR / WebSockets)
 - [ ] Advanced analytics and ML predictions
@@ -98,10 +96,9 @@ smartcity-insights/
 - [ ] Multi-language support
 - [ ] Enhanced visualization dashboards
 
----
 
-## 📘 Developer setup instructions:  
+## 📘 Developer setup instructions 
 
-See [`CONTRIBUTING.md`](Jyväskylä SmartCity Insights - Developer Guide) for details.
+The complete developer documentation is provided in [Jyväskylä SmartCity Insights – Developer Guide](CONTRIBUTING.md).
 
 

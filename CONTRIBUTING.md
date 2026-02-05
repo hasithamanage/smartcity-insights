@@ -1,8 +1,7 @@
 # Jyväskylä SmartCity Insights - Developer Guide
 
-This document contains **developer-focused documentation** for running, configuring and extending the Jyväskylä SmartCity Insights platform locally.
+This document contains developer-focused documentation for running, configuring and extending the Jyväskylä SmartCity Insights platform locally.
 
-It complements the main [`README.md`](README.md), which provides a high-level project overview.
 
 ---
 
@@ -31,7 +30,6 @@ graph TD
 
 ### Prerequisites
 
-Ensure the following tools are installed:
 
 - **.NET 10.0 SDK**
 - **Node.js 20+**
@@ -51,44 +49,54 @@ Ensure the following tools are installed:
 
 ### 2. Backend Setup (ASP.NET Core API)
 
-Navigate to the API folder, apply migrations and run the service:
-
    ```bash
    cd backend/SmartCity.API
    dotnet ef database update
    dotnet run
    ```
-*API will be available at https://localhost:5038/swagger*
+API will be available at: 
 
-### 3. Frontend Setup (React + Vite)
-
-Ensure you have you have .env file configured in the project root:
-
-```env
-VITE_API_BASE_URL=https://localhost:5038.
+```arduino
+http://localhost:5038/swagger
 ```
 
-Navigate to the frontend project, install dependancies and run the development server:
+### 3. Frontend Setup (React + Vite)
 
    ```bash
    cd frontend/smartcity-dashboard
    npm install
    npm run dev
    ```
-*App will be available at http://localhost:5173*
 
+App will be available at:
+
+```arduino
+ http://localhost:5173
+ ```
+
+Ensure you have you have `.env` file configured in the project root:
+
+```env
+VITE_API_BASE_URL=https://localhost:5038
+```
 
 ### 4. Simulator Setup (IoT Data Source)
 
-In a new terminal, start the simulation engine to generate live data:
 
    ```bash
    cd simulator/SmartCity.Simulator
    dotnet run
   ```
 
-*Once running, it will continuously push simulated data to the backend API.*
+The Simulator needs to know where the API is. Ensure to update `appsettings.json`:
 
+```JSON
+{
+  "ApiSettings": {
+    "BaseUrl": "http://localhost:5038/api"
+  }
+}
+```
 ---
 
 ### Database Configuration
@@ -97,7 +105,6 @@ The project uses **Azure SQL Edge** via **Docker** to ensure cross-platform comp
 
 ### 1. Update the Backend Connection String
 
-In `backend/SmartCity.Api/appsettings.Development.json` (or `appsettings.json`), update the connection string configure for **Docker**:
 
 ```JSON
 "ConnectionStrings": {
@@ -107,70 +114,85 @@ In `backend/SmartCity.Api/appsettings.Development.json` (or `appsettings.json`),
 
 ### 2. Start the database 
 
-Inside the root folder, run:
-
 ```bash
 docker compose up -d smartcity-db  
 ```
-*Wait about 20 seconds for the database to finish "waking up" inside the container.*
 
 ---
 
 ### Note:
 
-1. **For Docker Users (Mac/Windows/Linux):** This string works as-is once the container is running.
+ **For Docker Users:** This string works as-is once the container is running.
 
-2. **For Windows (Local SQL Server):** You may optionally use a local SQL Server installation instead of Docker: change the server to `(localdb)\\mssqllocaldb` or `.` and use `Trusted_Connection=True`.
+**For Windows:** You may optionally use a local SQL Server installation instead of Docker: change the server to `(localdb)\\mssqllocaldb` and `Trusted_Connection=True`.
 
-3. Unlike local Windows SQL Server, the Docker version requires an explicit `User ID` (sa) and `Password`.
+Unlike local Windows SQL Server, the Docker version requires an explicit `User ID` (sa) and `Password`.
 
+---
 
-## API Documentation
-
-The **smartcity-insights** backend exposes a fully interactive OpenAPI/Swagger UI. This allows you to test the `CityMetrics` and `Auth` endpoints directly from the browser.
-
-```
-http://localhost:5038/swagger
-```
 
 ## Known Issues
 
-This project is currently under active development. Please refer to the [Issues](https://github.com/hasithamanage/smartcity-insights/issues) section for known bugs and planned features.
+This project is under active development. Please check the GitHub [Issues](https://github.com/hasithamanage/smartcity-insights/issues) section for tracked bugs and planned features.
 
+---
 
-### Permission Errors (UnauthorizedAccessException)
+### Permission Errors (`UnauthorizedAccessException`)
 
-If you see "Access to path is denied" regarding the `.aspnet/DataProtection-Keys` folder in your logs:
+If you see errors related to access being denied for the `.aspnet/DataProtection-Keys` directory:
 
-1. Ensure your account has ownership of the .aspnet folder.
+**Recommended actions:**
+1. Ensure your user account owns the `.aspnet` folder.
+2. Temporarily disable antivirus software or add an exception for the .NET runtime.
+3. The application automatically falls back to an **Ephemeral Data Protection Provider** if disk access is blocked.
 
-2. If using Antivirus (Avast/Norton), temporarily disable it or add an exception for the .NET runtime.
-
-3. The project is configured to use an Ephemeral Data Provider if disk access is blocked.
+---
 
 ### JWT Key Requirements
 
-For local development, ensure your `appsettings.Development.json` has a `Jwt:Key` that is at least 32 characters long to satisfy the HS256 algorithm requirements.
+For local development, ensure `appsettings.Development.json` includes a `Jwt:Key` with **at least 32 characters**, as required by the **HS256** signing algorithm.
 
+```JSON
+"Jwt": {
+    "Key": "ThisAtleast32Characters!",
+    "Issuer": "YourApi",
+    "Audience": "YourFrontend"
+}
+```
 
-## Contributing
+---
 
-Welcome contributions!  Please follow these steps:
+## Contributing Guidelines
 
-### 1. Find or Create an Issue
-Before starting any work, please ensure there is an open **Issue** describing the feature or bug. This prevents duplicate work and ensures architectural alignment.
+Contributions are welcome and appreciated!
 
-### 2. Standard Workflow
-1. **Fork** the repository.
-2. **Create a branch** using a naming convention:
+### 1️⃣ Find or Create an Issue
+
+Before starting work, ensure there is an open **Issue** describing the bug or feature. This helps avoid duplication and keeps changes aligned with the architecture.
+
+---
+
+### 2️⃣  Standard Workflow
+
+1. **Fork** the repository
+2. **Create a branch** using the following naming conventions:
    - `feature/issue-number-short-description`
-   - `fix/issue-number-bug-name`
-3. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/):
+   - `fix/issue-number-bug-description`
+3. **Commit changes** using **Conventional Commits**, for example:
    - `feat: add real-time traffic sensor logic`
-   - `fix: resolve auth token expiry race condition`
-4. **Push** to your fork and open a **Pull Request**.
+   - `fix: resolve auth token expiry issue`
+4. **Push** your branch and open a **Pull Request**
 
-### 3. Pull Request Requirements
-- Reference the issue number in the description (e.g: `Fixes #12`).
-- Ensure all TypeScript and .NET projects build without errors.
-- Follow the established project structure (Logic in Hooks/Services, UI in Components).
+---
+
+### 3️⃣ Pull Request Requirements
+
+- Reference the related issue (e.g. `Fixes #12`)
+- Ensure all **.NET** and **TypeScript** projects build successfully
+- Follow the existing project structure
+
+
+
+
+
+
